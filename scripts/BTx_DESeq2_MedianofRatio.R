@@ -7,6 +7,7 @@ rm(list = ls())
 # BiocManager::install("apeglm")
 library(tidyverse)
 library(RColorBrewer)
+library(EDASeq)
 library(RUVSeq)
 library(DESeq2)
 library(apeglm)
@@ -30,7 +31,7 @@ genefilteredList <- rownames(genefiltered)
 # make DESeqDataSet object
 gene_set_nonorm <- newSeqExpressionSet(as.matrix(genefiltered), 
                                        phenoData = data.frame(conditions, row.names=colnames(genefiltered)))
-gene_dds_nonorm <- DESeqDataSetFromMatrix(countData = counts(gene_set_nonorm), 
+gene_dds_nonorm <- DESeq2::DESeqDataSetFromMatrix(countData = counts(gene_set_nonorm), 
                                           colData = pData(gene_set_nonorm), design = ~ conditions)
 
 # run DESeq
@@ -43,29 +44,14 @@ saveRDS(gene_dds_nonorm2, file = "RData/DESeq2_nospike_genedds.RData")
 
 # make RLE plot
 normalized_counts_deseq <- counts(gene_dds_nonorm2, normalized = TRUE)
+#write.csv(normalized_counts_deseq, file = "normcount_DESeq2_nospike.txt")
+
+# make side-by-side RLE and PCA plot
 x <- as.factor(rep(c("controlam", "controlpm", "chillingam", "chillingpm"), each = 4)) 
 x <- factor(x, levels = c("controlam", "controlpm", "chillingam", "chillingpm"))
 colors <- brewer.pal(4, "Set2")
 samplenames <- colnames(normalized_counts_deseq)
-plotRLE(normalized_counts_deseq, outline=FALSE, ylim=c(-4, 4), col=colors[x], xaxt = "n", 
-        ylab = "Relative log expression")
-axis(1, at=1:16, labels = samplenames, las = 2, cex.axis = 0.7)
-plotPCA(normalized_counts_deseq, col=colors[x], cex=0.75)
-write.csv(normalized_counts_deseq, file = "normcount_DESeq2_nospike.txt")
-
-# save plot
-png(filename="DESeq2_nospike_RLE.png", width=7, height=4, units="in", res=300)
-plotRLE(normalized_counts_deseq, outline=FALSE, ylim=c(-4, 4), col=colors[x], xaxt = "n", 
-        ylab = "Relative log expression")
-axis(1, at=1:16, labels = samplenames, las = 2, cex.axis = 0.7)
-dev.off()
-
-png(filename="DESeq2_nospike_PCA.png", width=7, height=4, units="in", res=300)
-plotPCA(normalized_counts_deseq, col=colors[x], cex=0.75)
-dev.off()
-
-# make side-by-side RLE and PCA plot
-png(filename="DESeq2_nospike_RLE_PCAplot.png", width=7, height=3, units="in", res=300)
+#png(filename="DESeq2_nospike_RLE_PCAplot.png", width=7, height=3, units="in", res=300)
 par(mfrow = c(1, 2))
 par(mar = c(5, 4, 1, 1))
 plotRLE(normalized_counts_deseq, outline=FALSE, ylim=c(-4, 4), col=colors[x], xaxt = "n", 
@@ -73,7 +59,7 @@ plotRLE(normalized_counts_deseq, outline=FALSE, ylim=c(-4, 4), col=colors[x], xa
         cex.lab = 1, cex.axis=0.8)
 axis(1, at=1:16, labels = samplenames, las = 2, cex.axis = 0.8)
 plotPCA(normalized_counts_deseq, col=colors[x], cex=0.7, cex.lab = 1, cex.axis = 0.8)
-dev.off()
+#dev.off()
 
 ####################################################################
 ##### controlam VS controlpm -------------------------------------------------
@@ -92,8 +78,8 @@ resLFC_nonorm005lfcdown <- subset(resLFC_nonorm005, resLFC_nonorm005$log2FoldCha
 resLFC_nonorm005lfc <- rbind(resLFC_nonorm005lfcup, resLFC_nonorm005lfcdown)
 
 # get gene list
-resLFC_nonorm005lfcuplist <- rownames(resLFC_nonorm005lfcup)
-resLFC_nonorm005lfcdownlist <- rownames(resLFC_nonorm005lfcdown)
+resLFC_nonorm005lfcuplist <- rownames(resLFC_nonorm005lfcup) #4182
+resLFC_nonorm005lfcdownlist <- rownames(resLFC_nonorm005lfcdown) #3934
 resLFC_nonorm005lfclist <- rownames(resLFC_nonorm005lfc)
 
 # export gene list
@@ -129,8 +115,8 @@ trtam_nonorm005lfcdown <- subset(trtam_nonorm005, trtam_nonorm005$log2FoldChange
 trtam_nonorm005lfc <- rbind(trtam_nonorm005lfcup, trtam_nonorm005lfcdown)
 
 # get gene list
-trtam_nonorm005lfcuplist <- rownames(trtam_nonorm005lfcup)
-trtam_nonorm005lfcdownlist <- rownames(trtam_nonorm005lfcdown)
+trtam_nonorm005lfcuplist <- rownames(trtam_nonorm005lfcup) #3739
+trtam_nonorm005lfcdownlist <- rownames(trtam_nonorm005lfcdown) #3411
 trtam_nonorm005lfclist <- rownames(trtam_nonorm005lfc)
 
 # export gene list
@@ -164,8 +150,8 @@ cdampm_resLFC_nonorm005lfcdown <- subset(cdampm_resLFC_nonorm005, cdampm_resLFC_
 cdampm_resLFC_nonorm005lfc <- rbind(cdampm_resLFC_nonorm005lfcup, cdampm_resLFC_nonorm005lfcdown)
 
 # get gene list
-cdampm_resLFC_nonorm005lfcuplist <- rownames(cdampm_resLFC_nonorm005lfcup)
-cdampm_resLFC_nonorm005lfcdownlist <- rownames(cdampm_resLFC_nonorm005lfcdown)
+cdampm_resLFC_nonorm005lfcuplist <- rownames(cdampm_resLFC_nonorm005lfcup) #3329
+cdampm_resLFC_nonorm005lfcdownlist <- rownames(cdampm_resLFC_nonorm005lfcdown) #3148
 cdampm_resLFC_nonorm005lfclist <- rownames(cdampm_resLFC_nonorm005lfc)
 
 # export gene list
@@ -208,8 +194,8 @@ trtpm_nonorm005lfcdown <- subset(trtpm_nonorm005, trtpm_nonorm005$log2FoldChange
 trtpm_nonorm005lfc <- rbind(trtpm_nonorm005lfcup, trtpm_nonorm005lfcdown)
 
 # get gene list
-trtpm_nonorm005lfcuplist <- rownames(trtpm_nonorm005lfcup)
-trtpm_nonorm005lfcdownlist <- rownames(trtpm_nonorm005lfcdown)
+trtpm_nonorm005lfcuplist <- rownames(trtpm_nonorm005lfcup) #2611
+trtpm_nonorm005lfcdownlist <- rownames(trtpm_nonorm005lfcdown) #2309
 trtpm_nonorm005lfclist <- rownames(trtpm_nonorm005lfc)
 
 # export gene list
@@ -219,31 +205,4 @@ write.table(trtpm_nonorm005lfcdownlist, file = "output/DEGs_DESeq2_nospike_ctrlc
             row.names = FALSE, col.names = FALSE, quote = FALSE)
 # save RData
 saveRDS(trtpm_nonorm005lfc, file = "RData/DEGs_deseq_full_ctrlcoldpm.RData")
-
-##########################################################
-#### compare DEGs
-resLFC_nonorm005lfclist # comtrolam vs comtrolpm
-trtam_nonorm005lfclist # controlam vs chillingam
-cdampm_resLFC_nonorm005lfclist # chillingam vs chillingpm
-trtpm_nonorm005lfclist # controlpm vs chillingpm
-
-# make a venn diagram
-gplots::venn(list(ctrlAM_PM = resLFC_nonorm005lfclist,
-                  ctrl_chillAM = trtam_nonorm005lfclist,
-                  chillAM_PM = cdampm_resLFC_nonorm005lfclist,
-                  ctrl_chillPM = trtpm_nonorm005lfclist))
-
-# make a venn diagram to compare DE genes
-library(VennDiagram)
-colors <- brewer.pal(4, "Pastel1")
-venn.diagram(list(set1 = resLFC_nonorm005lfclist,
-                  set2 = trtam_nonorm005lfclist,
-                  set3 = cdampm_resLFC_nonorm005lfclist,
-                  set4 = trtpm_nonorm005lfclist), 
-             filename = "./venn_DESeq2_nospike_DEGs.png", 
-             fill = colors, lwd = 2, lty = 'blank',
-             category.names = c("AM-PM in ctrl", "ctrl-chill in AM", 
-                                "AM-PM in chill", "ctrl-chill in PM"),
-             cat.pos = c(350, 10, 0, 0),
-             height = 9, width = 9, units = 'in')
 
