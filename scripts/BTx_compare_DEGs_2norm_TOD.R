@@ -32,8 +32,6 @@ nospike_normalizedcounts %>%
 
 ### get the normalized counts from nudelta genedds
 nudelta_normalizedcounts <- DESeq2::counts(nudelta_genedds, normalized=TRUE)
-#geomean = 37.89637
-#nudelta_normalizedcounts <- nudelta_normalizedcounts/geomean
 nudelta_normalizedcounts <- log2(nudelta_normalizedcounts + 1)
 nudelta_normalizedcounts <- as.data.frame(nudelta_normalizedcounts)
 # select only control data
@@ -95,17 +93,13 @@ rownames(my_sample_col) <- colnames(AMup_both_xy2)
 my_colour = list(
   condition = c(control_AM = "#F8766D", control_PM = "#00BFC4"),
   method = c(`Median of Ratio` = "#00BE67", `Spike-in` = "#C77CFF"))
-pheatmap(as.matrix(AMup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour,
-         fontsize = 20)
 # save plot
-png(filename="pheatmap_DEG_ctrlampm_AMup_both.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_ctrlampm_AMup_both.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(AMup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
          show_colnames = FALSE, scale="row", annotation_colors = my_colour,
          fontsize = 20)
-dev.off()
+#dev.off()
 
 ### make a heatmap of DEGs in nospike only ----
 AMup_nospike_only_xy <- xy[xy$geneID %in% AMup_nospike_only, ]
@@ -119,39 +113,12 @@ rownames(my_sample_col) <- colnames(AMup_nospike_only_xy2)
 my_colour = list(
   condition = c(control_AM = "#F8766D", control_PM = "#00BFC4"),
   method = c(`Median of Ratio` = "#00BE67", `Spike-in` = "#C77CFF"))
-pheatmap(as.matrix(AMup_nospike_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour,
-         fontsize = 20)
 # save plot
-png(filename="pheatmap_DEG_ctrlampm_AMup_nospike.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_ctrlampm_AMup_nospike.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(AMup_nospike_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
          show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
-dev.off()
-
-### check gene annotation ----
-Sb_annotation <- read.delim("Sbicolor_454_v3.1.1.annotation_info.txt", header = TRUE)
-Sb_annotation %>%
-  dplyr::select(locusName, transcriptName, peptideName, Pfam,
-                Panther, KOG, ec, KO, GO) -> Sb_annotation_Sb
-# convert factor to character & replace blank with NA
-Sb_annotation_Sb %>% 
-  mutate_if(is.factor, as.character) %>%
-  mutate_all(na_if, "") -> Sb_annotation_Sb2
-
-# check NAs
-map(Sb_annotation_Sb2, ~sum(is.na(.)))
-final[complete.cases(final[ , 5:6]),]
-Sb_annotation_Sb3 <- Sb_annotation_Sb2[complete.cases(Sb_annotation_Sb2[, c("Panther", "GO")]), ]
-# dim # 21922 x 9
-map(Sb_annotation_Sb3, ~sum(is.na(.)))
-# get locusName that have both Panther and GO IDs
-Sb_annotation_Sb3 %>% 
-  dplyr::select(locusName) %>%
-  distinct() -> Sb_annotation_Sb_name #dim 15225 x 1
-Sb_name_AMup_both <- Sb_annotation_Sb_name[Sb_annotation_Sb_name$locusName %in% AMup_both,] # genes = 1364
-Sb_name_nospike_only <- Sb_annotation_Sb_name[Sb_annotation_Sb_name$locusName %in% AMup_nospike_only,] # genes = 730
+#dev.off()
 
 
 ###########################################################
@@ -185,15 +152,12 @@ rownames(my_sample_col) <- colnames(PMup_both_xy2)
 my_colour = list(
   condition = c(control_AM = "#F8766D", control_PM = "#00BFC4"),
   method = c(`Median of Ratio` = "#00BE67", `Spike-in` = "#C77CFF"))
-pheatmap(as.matrix(PMup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour)
 # save plot
-png(filename="pheatmap_DEG_ctrlampm_PMup_both.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_ctrlampm_PMup_both.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(PMup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour)
-dev.off()
+         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+#dev.off()
 
 ### make a heatmap of DEGs in nudelta only ----
 PMup_nudelta_only_xy <- xy[xy$geneID %in% PMup_nudelta_only, ]
@@ -207,19 +171,12 @@ rownames(my_sample_col) <- colnames(PMup_nudelta_only_xy2)
 my_colour = list(
   condition = c(control_AM = "#F8766D", control_PM = "#00BFC4"),
   method = c(`Median of Ratio` = "#00BE67", `Spike-in` = "#C77CFF"))
-pheatmap(as.matrix(PMup_nudelta_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour)
 # save plot
-png(filename="pheatmap_DEG_ctrlampm_PMup_nudelta.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_ctrlampm_PMup_nudelta.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(PMup_nudelta_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour)
-dev.off()
-
-### check gene annotation ----
-Sb_name_PMup_both <- Sb_annotation_Sb_name[Sb_annotation_Sb_name$locusName %in% PMup_both,] # genes = 2257
-Sb_name_nudelta_only <- Sb_annotation_Sb_name[Sb_annotation_Sb_name$locusName %in% PMup_nudelta_only,] # genes = 1252
+         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+#dev.off()
 
 ### total DEGs ----
 # make a venn diagram to compare DE genes
@@ -261,15 +218,13 @@ my_sample_col <- data.frame(condition = rep(c("control_AM", "control_PM",
                                               "control_AM", "control_PM"), c(4,4,4,4)),
                             method = rep(c("Median_of_Ratio", "NuDelta"), c(8,8)))
 rownames(my_sample_col) <- colnames(DEG_both_xy2)
-pheatmap(as.matrix(DEG_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE)
+
 # save plot
-png(filename="pheatmap_DEG_ctrlampm_both.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_ctrlampm_both.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(DEG_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE)
-dev.off()
+         show_colnames = FALSE, fontsize = 20)
+#dev.off()
 
 ##############################################################
 ##############################################################
@@ -303,9 +258,9 @@ volcano1 <- EnhancedVolcano(DEG_ctrlampm_both_nospike_logFC,
                             title = 'DEGs in the Median of Ratio method',
                             pCutoff = 0.05, FCcutoff = 0.5, pointSize = 1.5, labSize = 2.5)
 # save plot
-png(filename="volcano_ctrlampm_DEGboth_nospike.png", width=8.5, height=11, units="in", res=300)
-volcano1 
-dev.off()
+#png(filename="volcano_ctrlampm_DEGboth_nospike.png", width=8.5, height=11, units="in", res=300)
+#volcano1 
+#dev.off()
 
 # make a volcano plot of nudelta
 DEG_ctrlampm_both_nudelta_logFC <- nudelta_logFC[rownames(nudelta_logFC) %in% DEG_ctrlampm_both, ]
@@ -317,9 +272,9 @@ volcano2 <- EnhancedVolcano(DEG_ctrlampm_both_nudelta_logFC,
                             title = 'DEGs in the NuDelta method',
                             pCutoff = 0.05, FCcutoff = 0.5, pointSize = 1.5, labSize = 2.5)
 # save plot
-png(filename="volcano_ctrlampm_DEGboth_nudelta.png", width=8.5, height=11, units="in", res=300)
-volcano2 
-dev.off()
+#png(filename="volcano_ctrlampm_DEGboth_nudelta.png", width=8.5, height=11, units="in", res=300)
+#volcano2 
+#dev.off()
 
 ### DEGs in nospike method only ----
 # make a volcano plot of median of ratio
@@ -332,9 +287,10 @@ volcano3 <- EnhancedVolcano(DEG_ctrlampm_onlynospike_nospikelogFC,
                             title = 'DEGs only in the Median of Ratio method',
                             pCutoff = 0.05, FCcutoff = 0.5, pointSize = 1.5, labSize = 2.5)
 # save plot
-png(filename="volcano_ctrlampm_DEGnospike_nospike.png", width=8.5, height=11, units="in", res=300)
-volcano3
-dev.off()
+#png(filename="volcano_ctrlampm_DEGnospike_nospike.png", width=8.5, height=11, units="in", res=300)
+#volcano3
+#dev.off()
+
 # make a volcano plot of nudelta
 DEG_ctrlampm_onlynospike_nudeltalogFC <- nudelta_logFC[rownames(nudelta_logFC) %in% DEG_ctrlampm_nospike, ]
 # make a volcano plot
@@ -345,21 +301,10 @@ volcano4 <- EnhancedVolcano(DEG_ctrlampm_onlynospike_nudeltalogFC,
                             title = 'DEGs only in the Median of Ratio method',
                             pCutoff = 0.05, FCcutoff = 0.5, pointSize = 1.5, labSize = 2.5)
 # save plot
-png(filename="volcano_ctrlampm_DEGnospike_nudelta.png", width=7, height=7, units="in", res=300)
-volcano4
-dev.off()
+#png(filename="volcano_ctrlampm_DEGnospike_nudelta.png", width=7, height=7, units="in", res=300)
+#volcano4
+#dev.off()
 
-# get no. of genes with p-value < 0.05, logFC >= 0.5
-onlynospike_nudeltalogFC <- as.data.frame(DEG_ctrlampm_onlynospike_nudeltalogFC)
-onlynospike_nudeltalogFC %>%
-  rownames_to_column(var = "geneID") %>%
-  filter(padj >= 0.05) -> nudelta_lowpadj #dim 1249 x 6
-onlynospike_nudeltalogFC %>%
-  rownames_to_column(var = "geneID") %>%
-  filter(log2FoldChange >= -0.5) -> nudelta_lowFC #dim 1052 x 6
-# make a venn diagram
-gplots::venn(list(low_padj = nudelta_lowpadj$geneID,
-                  low_logFC = nudelta_lowFC$geneID))
 
 ####################################
 ### DEGs in nudelta method only ----
@@ -373,21 +318,9 @@ volcano5 <- EnhancedVolcano(DEG_ctrlampm_onlynudelta_nospikelogFC,
                             title = 'DEGs only in the NuDelta method',
                             pCutoff = 0.05, FCcutoff = 0.5, pointSize = 1.5, labSize = 5)
 # save plot
-png(filename="volcano_ctrlampm_DEGnudelta_nospike.png", width=7, height=7, units="in", res=300)
-volcano5
-dev.off()
-
-# get no. of genes with p-value < 0.05, logFC >= 0.5
-onlynudelta_nospikelogFC <- as.data.frame(DEG_ctrlampm_onlynudelta_nospikelogFC)
-onlynudelta_nospikelogFC %>%
-  rownames_to_column(var = "geneID") %>%
-  filter(padj >= 0.05) -> nospike_lowpadj #dim 2191 x 6
-onlynudelta_nospikelogFC %>%
-  rownames_to_column(var = "geneID") %>%
-  filter(log2FoldChange <= 0.5) -> nospike_lowFC #dim 2380 x 6
-# make a venn diagram
-gplots::venn(list(low_padj = nospike_lowpadj$geneID,
-                  low_logFC = nospike_lowFC$geneID))
+#png(filename="volcano_ctrlampm_DEGnudelta_nospike.png", width=7, height=7, units="in", res=300)
+#volcano5
+#dev.off()
 
 # make a volcano plot of nudelta
 DEG_ctrlampm_onlynudelta_nudeltalogFC <- nudelta_logFC[rownames(nudelta_logFC) %in% DEG_ctrlampm_nudelta, ]
@@ -399,9 +332,9 @@ volcano6 <- EnhancedVolcano(DEG_ctrlampm_onlynudelta_nudeltalogFC,
                             title = 'DEGs only in the NuDelta method',
                             pCutoff = 0.05, FCcutoff = 0.5, pointSize = 1.5, labSize = 2.5)
 # save plot
-png(filename="volcano_ctrlampm_DEGnudelta_nudelta.png", width=8.5, height=11, units="in", res=300)
-volcano6
-dev.off()
+#png(filename="volcano_ctrlampm_DEGnudelta_nudelta.png", width=8.5, height=11, units="in", res=300)
+#volcano6
+#dev.off()
 
 
 ###########################################################
@@ -487,15 +420,13 @@ rownames(my_sample_col) <- colnames(AMup_both_xy2)
 my_colour = list(
   condition = c(chilling_AM = "#F8766D", chilling_PM = "#00BFC4"),
   method = c(Median_of_Ratio = "#00BE67", NuDelta = "#C77CFF"))
-pheatmap(as.matrix(AMup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour)
+
 # save plot
-png(filename="pheatmap_DEG_coldampm_AMup_both.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_coldampm_AMup_both.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(AMup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour)
-dev.off()
+         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+#dev.off()
 
 ### make a heatmap of DEGs in nospike only ----
 AMup_nospike_only_xy <- xy[xy$geneID %in% AMup_nospike_only, ]
@@ -509,39 +440,13 @@ rownames(my_sample_col) <- colnames(AMup_nospike_only_xy2)
 my_colour = list(
   condition = c(chilling_AM = "#F8766D", chilling_PM = "#00BFC4"),
   method = c(Median_of_Ratio = "#00BE67", NuDelta = "#C77CFF"))
-pheatmap(as.matrix(AMup_nospike_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour)
+
 # save plot
-png(filename="pheatmap_DEG_coldampm_AMup_nospike.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_coldampm_AMup_nospike.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(AMup_nospike_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour)
-dev.off()
-
-### check gene annotation ----
-Sb_annotation <- read.delim("Sbicolor_454_v3.1.1.annotation_info.txt", header = TRUE)
-Sb_annotation %>%
-  dplyr::select(locusName, transcriptName, peptideName, Pfam,
-                Panther, KOG, ec, KO, GO) -> Sb_annotation_Sb
-# convert factor to character & replace blank with NA
-Sb_annotation_Sb %>% 
-  mutate_if(is.factor, as.character) %>%
-  mutate_all(na_if, "") -> Sb_annotation_Sb2
-
-# check NAs
-map(Sb_annotation_Sb2, ~sum(is.na(.)))
-final[complete.cases(final[ , 5:6]),]
-Sb_annotation_Sb3 <- Sb_annotation_Sb2[complete.cases(Sb_annotation_Sb2[, c("Panther", "GO")]), ]
-# dim # 21922 x 9
-map(Sb_annotation_Sb3, ~sum(is.na(.)))
-# get locusName that have both Panther and GO IDs
-Sb_annotation_Sb3 %>% 
-  dplyr::select(locusName) %>%
-  distinct() -> Sb_annotation_Sb_name #dim 15225 x 1
-Sb_name_AMup_both <- Sb_annotation_Sb_name[Sb_annotation_Sb_name$locusName %in% AMup_both,] # genes = 582
-Sb_name_nospike_only <- Sb_annotation_Sb_name[Sb_annotation_Sb_name$locusName %in% AMup_nospike_only,] # genes = 1122
-Sb_name_nudelta_only <- Sb_annotation_Sb_name[Sb_annotation_Sb_name$locusName %in% AMup_nudelta_only,] # genes = 0
+         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+#dev.off()
 
 
 ###########################################################
@@ -575,15 +480,13 @@ rownames(my_sample_col) <- colnames(PMup_both_xy2)
 my_colour = list(
   condition = c(chilling_AM = "#F8766D", chilling_PM = "#00BFC4"),
   method = c(Median_of_Ratio = "#00BE67", NuDelta = "#C77CFF"))
-pheatmap(as.matrix(PMup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour)
+
 # save plot
-png(filename="pheatmap_DEG_coldampm_PMup_both.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_coldampm_PMup_both.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(PMup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour)
-dev.off()
+         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+#dev.off()
 
 ### make a heatmap of DEGs in nudelta only ----
 PMup_nudelta_only_xy <- xy[xy$geneID %in% PMup_nudelta_only, ]
@@ -597,19 +500,14 @@ rownames(my_sample_col) <- colnames(PMup_nudelta_only_xy2)
 my_colour = list(
   condition = c(chilling_AM = "#F8766D", chilling_PM = "#00BFC4"),
   method = c(Median_of_Ratio = "#00BE67", NuDelta = "#C77CFF"))
-pheatmap(as.matrix(PMup_nudelta_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour)
-# save plot
-png(filename="pheatmap_DEG_coldampm_PMup_nudelta.png", width=9, height=7, units="in", res=300)
-pheatmap(as.matrix(PMup_nudelta_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour)
-dev.off()
 
-### check gene annotation ----
-Sb_name_PMup_both <- Sb_annotation_Sb_name[Sb_annotation_Sb_name$locusName %in% PMup_both,] # genes = 1685
-Sb_name_PMnudelta_only <- Sb_annotation_Sb_name[Sb_annotation_Sb_name$locusName %in% PMup_nudelta_only,] # genes = 3278
+# save plot
+#png(filename="pheatmap_DEG_coldampm_PMup_nudelta.png", width=9, height=7, units="in", res=300)
+pheatmap(as.matrix(PMup_nudelta_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
+         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
+         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+#dev.off()
+
 
 ### total DEGs ----
 # make a venn diagram to compare DE genes
@@ -651,15 +549,13 @@ my_sample_col <- data.frame(condition = rep(c("chilling_AM", "chilling_PM",
                                               "chilling_AM", "chilling_PM"), c(4,4,4,4)),
                             method = rep(c("Median_of_Ratio", "NuDelta"), c(8,8)))
 rownames(my_sample_col) <- colnames(cold_both_xy2)
-pheatmap(as.matrix(cold_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE)
+
 # save plot
-png(filename="pheatmap_DEG_coldampm_both.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_coldampm_both.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(cold_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE)
-dev.off()
+         show_colnames = FALSE, fontsize = 20)
+#dev.off()
 
 ### make a heatmap of DEGs (AM-up + PM-up) in nudelta method ----
 AMup_nudelta_only_xy <- xy[xy$geneID %in% AMup_nudelta_only, ]
@@ -671,15 +567,13 @@ my_sample_col <- data.frame(condition = rep(c("chilling_AM", "chilling_PM",
                                               "chilling_AM", "chilling_PM"), c(4,4,4,4)),
                             method = rep(c("Median_of_Ratio", "NuDelta"), c(8,8)))
 rownames(my_sample_col) <- colnames(cold_nudelta_xy2)
-pheatmap(as.matrix(cold_nudelta_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE)
+
 # save plot
-png(filename="pheatmap_DEG_coldampm_nudelta.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_coldampm_nudelta.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(cold_nudelta_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE)
-dev.off()
+         show_colnames = FALSE, fontsize = 20)
+#dev.off()
 
 ##############################################################
 ##############################################################
@@ -714,9 +608,9 @@ volcano1 <- EnhancedVolcano(DEG_coldampm_both_nospike_logFC,
                             title = 'DEGs in the Median of Ratio method',
                             pCutoff = 0.05, FCcutoff = 0.5, pointSize = 1.5, labSize = 2.5)
 # save plot
-png(filename="volcano_coldampm_DEGboth_nospike.png", width=8.5, height=11, units="in", res=300)
-volcano1 
-dev.off()
+#png(filename="volcano_coldampm_DEGboth_nospike.png", width=8.5, height=11, units="in", res=300)
+#volcano1 
+#dev.off()
 
 # make a volcano plot of nudelta
 DEG_coldampm_both_nudelta_logFC <- nudelta_logFC[rownames(nudelta_logFC) %in% DEG_coldampm_both, ]
@@ -728,9 +622,9 @@ volcano2 <- EnhancedVolcano(DEG_coldampm_both_nudelta_logFC,
                             title = 'DEGs in the NuDelta method',
                             pCutoff = 0.05, FCcutoff = 0.5, pointSize = 1.5, labSize = 2.5)
 # save plot
-png(filename="volcano_coldampm_DEGboth_nudelta.png", width=8.5, height=11, units="in", res=300)
-volcano2 
-dev.off()
+#png(filename="volcano_coldampm_DEGboth_nudelta.png", width=8.5, height=11, units="in", res=300)
+#volcano2 
+#dev.off()
 
 ### DEGs in nospike method only ----
 # make a volcano plot of median of ratio
@@ -743,9 +637,10 @@ volcano3 <- EnhancedVolcano(DEG_coldampm_onlynospike_nospikelogFC,
                             title = 'DEGs only in the Median of Ratio method',
                             pCutoff = 0.05, FCcutoff = 0.5, pointSize = 1.5, labSize = 2.5)
 # save plot
-png(filename="volcano_coldampm_DEGnospike_nospike.png", width=8.5, height=11, units="in", res=300)
-volcano3
-dev.off()
+#png(filename="volcano_coldampm_DEGnospike_nospike.png", width=8.5, height=11, units="in", res=300)
+#volcano3
+#dev.off()
+
 # make a volcano plot of nudelta
 DEG_coldampm_onlynospike_nudeltalogFC <- nudelta_logFC[rownames(nudelta_logFC) %in% DEG_coldampm_nospike, ]
 # make a volcano plot
@@ -756,21 +651,10 @@ volcano4 <- EnhancedVolcano(DEG_coldampm_onlynospike_nudeltalogFC,
                             title = 'DEGs only in the Median of Ratio method',
                             pCutoff = 0.05, FCcutoff = 0.5, pointSize = 1.5, labSize = 2.5)
 # save plot
-png(filename="volcano_coldampm_DEGnospike_nudelta.png", width=7, height=7, units="in", res=300)
-volcano4
-dev.off()
+#png(filename="volcano_coldampm_DEGnospike_nudelta.png", width=7, height=7, units="in", res=300)
+#volcano4
+#dev.off()
 
-# get no. of genes with p-value > 0.05, |logFC| <= 0.5
-onlynospike_nudeltalogFC <- as.data.frame(DEG_coldampm_onlynospike_nudeltalogFC)
-onlynospike_nudeltalogFC %>%
-  rownames_to_column(var = "geneID") %>%
-  filter(padj >= 0.05) -> nudelta_lowpadj #dim 1928 x 6
-onlynospike_nudeltalogFC %>%
-  rownames_to_column(var = "geneID") %>%
-  filter(log2FoldChange >= -0.5) -> nudelta_lowFC #dim 1738 x 6
-# make a venn diagram
-gplots::venn(list(low_padj = nudelta_lowpadj$geneID,
-                  low_logFC = nudelta_lowFC$geneID))
 
 ####################################
 ### DEGs in nudelta method only ----
@@ -785,21 +669,9 @@ volcano5 <- EnhancedVolcano(DEG_coldampm_onlynudelta_nospikelogFC2,
                             title = 'DEGs only in the NuDelta method',
                             pCutoff = 0.05, FCcutoff = 0.5, pointSize = 1.5, labSize = 2.5)
 # save plot
-png(filename="volcano_coldampm_DEGnudelta_nospike.png", width=7, height=7, units="in", res=300)
-volcano5
-dev.off()
-
-# get no. of genes with p-value > 0.05, |logFC| <= 0.5
-onlynudelta_nospikelogFC <- as.data.frame(DEG_coldampm_onlynudelta_nospikelogFC2)
-onlynudelta_nospikelogFC %>%
-  rownames_to_column(var = "geneID") %>%
-  filter(padj >= 0.05) -> nospike_lowpadj #dim 5919 x 6
-onlynudelta_nospikelogFC %>%
-  rownames_to_column(var = "geneID") %>%
-  filter(log2FoldChange <= 0.5) -> nospike_lowFC #dim 5265 x 6
-# make a venn diagram
-gplots::venn(list(low_padj = nospike_lowpadj$geneID,
-                  low_logFC = nospike_lowFC$geneID))
+#png(filename="volcano_coldampm_DEGnudelta_nospike.png", width=7, height=7, units="in", res=300)
+#volcano5
+#dev.off()
 
 # make a volcano plot of nudelta
 DEG_coldampm_onlynudelta_nudeltalogFC <- nudelta_logFC[rownames(nudelta_logFC) %in% DEG_coldampm_nudelta, ]
@@ -811,9 +683,9 @@ volcano6 <- EnhancedVolcano(DEG_coldampm_onlynudelta_nudeltalogFC,
                             title = 'DEGs only in the NuDelta method',
                             pCutoff = 0.05, FCcutoff = 0.5, pointSize = 1.5, labSize = 2.5)
 # save plot
-png(filename="volcano_coldampm_DEGnudelta_nudelta.png", width=8.5, height=11, units="in", res=300)
-volcano6
-dev.off()
+#png(filename="volcano_coldampm_DEGnudelta_nudelta.png", width=8.5, height=11, units="in", res=300)
+#volcano6
+#dev.off()
 
 
 
