@@ -93,15 +93,13 @@ rownames(my_sample_col) <- colnames(coldup_both_xy2)
 my_colour = list(
   condition = c(control_AM = "#F8766D", chilling_AM = "#00BFC4"),
   method = c(`Median of Ratio` = "#00BE67", `Spike-in` = "#C77CFF"))
-pheatmap(as.matrix(coldup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE,
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+
 # save plot
-png(filename="pheatmap_DEG_ctrlcoldam_coldup_both.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_ctrlcoldam_coldup_both.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(coldup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE,
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
          show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
-dev.off()
+#dev.off()
 
 ### make a heatmap of DEGs in nospike only ----
 coldup_nospike_only_xy <- xy[xy$geneID %in% coldup_nospike_only, ]
@@ -115,15 +113,13 @@ rownames(my_sample_col) <- colnames(coldup_nospike_only_xy2)
 my_colour = list(
   condition = c(control_AM = "#F8766D", chilling_AM = "#00BFC4"),
   method = c(`Median of Ratio` = "#00BE67", `Spike-in` = "#C77CFF"))
-pheatmap(as.matrix(coldup_nospike_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+
 # save plot
-png(filename="pheatmap_DEG_ctrlcoldam_coldup_nospike.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_ctrlcoldam_coldup_nospike.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(coldup_nospike_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
          show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
-dev.off()
+#dev.off()
 
 
 ###########################################################
@@ -157,15 +153,13 @@ rownames(my_sample_col) <- colnames(ctrlup_both_xy2)
 my_colour = list(
   condition = c(control_AM = "#F8766D", chilling_AM = "#00BFC4"),
   method = c(`Median of Ratio` = "#00BE67", `Spike-in` = "#C77CFF"))
-pheatmap(as.matrix(ctrlup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+
 # save plot
-png(filename="pheatmap_DEG_ctrlcoldam_ctrlup_both.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_ctrlcoldam_ctrlup_both.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(ctrlup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
          show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
-dev.off()
+#dev.off()
 
 ### make a heatmap of DEGs in nudelta only ----
 ctrlup_nudelta_only_xy <- xy[xy$geneID %in% ctrlup_nudelta_only, ]
@@ -179,15 +173,13 @@ rownames(my_sample_col) <- colnames(ctrlup_nudelta_only_xy2)
 my_colour = list(
   condition = c(control_AM = "#F8766D", chilling_AM = "#00BFC4"),
   method = c(`Median of Ratio` = "#00BE67", `Spike-in` = "#C77CFF"))
-pheatmap(as.matrix(ctrlup_nudelta_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+
 # save plot
-png(filename="pheatmap_DEG_ctrlcoldam_ctrlup_nudelta.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_ctrlcoldam_ctrlup_nudelta.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(ctrlup_nudelta_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
          show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
-dev.off()
+#dev.off()
 
 ### total DEGs ----
 # make a venn diagram to compare DE genes
@@ -304,15 +296,13 @@ rownames(my_sample_col) <- colnames(coldup_both_xy2)
 my_colour = list(
   condition = c(control_PM = "#F8766D", chilling_PM = "#00BFC4"),
   method = c(`Median of Ratio` = "#00BE67", `Spike-in` = "#C77CFF"))
-pheatmap(as.matrix(coldup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE,
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+
 # save plot
-png(filename="pheatmap_DEG_ctrlcoldpm_coldup_both.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_ctrlcoldpm_coldup_both.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(coldup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE,
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
          show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
-dev.off()
+#dev.off()
 
 ### make a heatmap of DEGs in nudelta only ----
 coldup_nudelta_only_xy <- xy[xy$geneID %in% coldup_nudelta_only, ]
@@ -326,15 +316,13 @@ rownames(my_sample_col) <- colnames(coldup_nudelta_only_xy2)
 my_colour = list(
   condition = c(control_PM = "#F8766D", chilling_PM = "#00BFC4"),
   method = c(`Median of Ratio` = "#00BE67", `Spike-in` = "#C77CFF"))
-pheatmap(as.matrix(coldup_nudelta_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+
 # save plot
-png(filename="pheatmap_DEG_ctrlcoldpm_coldup_nudelta.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_ctrlcoldpm_coldup_nudelta.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(coldup_nudelta_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
          show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
-dev.off()
+#dev.off()
 
 
 ###########################################################
@@ -368,15 +356,13 @@ rownames(my_sample_col) <- colnames(ctrlup_both_xy2)
 my_colour = list(
   condition = c(control_PM = "#F8766D", chilling_PM = "#00BFC4"),
   method = c(`Median of Ratio` = "#00BE67", `Spike-in` = "#C77CFF"))
-pheatmap(as.matrix(ctrlup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+
 # save plot
-png(filename="pheatmap_DEG_ctrlcoldpm_ctrlup_both.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_ctrlcoldpm_ctrlup_both.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(ctrlup_both_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
          show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
-dev.off()
+#dev.off()
 
 ### make a heatmap of DEGs in nospike only ----
 ctrlup_nospike_only_xy <- xy[xy$geneID %in% ctrlup_nospike_only, ]
@@ -390,15 +376,13 @@ rownames(my_sample_col) <- colnames(ctrlup_nospike_only_xy2)
 my_colour = list(
   condition = c(control_PM = "#F8766D", chilling_PM = "#00BFC4"),
   method = c(`Median of Ratio` = "#00BE67", `Spike-in` = "#C77CFF"))
-pheatmap(as.matrix(ctrlup_nospike_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
-         show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
-         show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
+
 # save plot
-png(filename="pheatmap_DEG_ctrlcoldpm_ctrlup_nospike.png", width=9, height=7, units="in", res=300)
+#png(filename="pheatmap_DEG_ctrlcoldpm_ctrlup_nospike.png", width=9, height=7, units="in", res=300)
 pheatmap(as.matrix(ctrlup_nospike_only_xy2), cluster_rows = TRUE, cluster_cols = FALSE, 
          show_rownames = FALSE, border_color = NA, annotation_col = my_sample_col,
          show_colnames = FALSE, scale="row", annotation_colors = my_colour, fontsize = 20)
-dev.off()
+#dev.off()
 
 ### total DEGs ----
 # make a venn diagram to compare DE genes
