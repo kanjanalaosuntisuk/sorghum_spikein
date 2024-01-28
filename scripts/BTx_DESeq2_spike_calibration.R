@@ -42,7 +42,7 @@ matSI <- as.matrix(spike_filtered)
 matRNA <- genefiltered
 
 # read spike-in concentration txt files
-spike_conc <- read.delim("spike_conc_BTx.txt", header = TRUE)
+spike_conc <- read.delim("input/spike_conc_BTx.txt", header = TRUE)
 str(spike_conc)
 spike_conc %>%
   column_to_rownames(var = "spikeID") -> spike_conc
@@ -122,44 +122,25 @@ sizeFactors(genedds) <- nudelta_cal
 colData(genedds)
 
 # run differential expression test
-genedds2 <- estimateDispersions(genedds)
-genedds3 <- nbinomWaldTest(genedds2)
+genedds2 <- DESeq2::estimateDispersions(genedds)
+genedds3 <- DESeq2::nbinomWaldTest(genedds2)
 resultsNames(genedds3)
 
 # save RData
-saveRDS(genedds3, file = "RData/DESeq2_nudelta_genedds.RData")
+#saveRDS(genedds3, file = "RData/DESeq2_nudelta_genedds.RData")
 
 # make RLE plot from normalized counts
 nudeltanormalized_counts <- DESeq2::counts(genedds3, normalized=TRUE)
 nudeltanormalized_counts_rc <- nudeltanormalized_counts/geomean
+# save RData
+#saveRDS(nudeltanormalized_counts_rc, file = "RData/DESeq2_nudelta_normcounts.RData")
+
+# make side-by-side RLE and PCA plot
 x <- as.factor(rep(c("controlam", "controlpm", "chillingam", "chillingpm"), each = 4)) 
 x <- factor(x, levels = c("controlam", "controlpm", "chillingam", "chillingpm"))
 colors <- brewer.pal(4, "Set2") 
 samplenames <- colnames(nudeltanormalized_counts)
-# save RData
-saveRDS(nudeltanormalized_counts_rc, file = "RData/DESeq2_nudelta_normcounts.RData")
-
-# save plot
-png(filename="DESeq2_nudelta_RLE.png", width=7, height=4, units="in", res=300)
-plotRLE(nudeltanormalized_counts_rc, outline=FALSE, ylim=c(-4, 4), col=colors[x],
-        xaxt = "n", ylab = "Relative log expression") 
-axis(1, at=1:16, labels = samplenames, las = 2, cex.axis = 0.7)
-dev.off()
-png(filename="DESeq2_nudelta_PCA.png", width=7, height=4, units="in", res=300)
-plotPCA(nudeltanormalized_counts_rc, col=colors[x], cex=0.75)
-dev.off()
-
-png(filename="DESeq2_nudelta_RLE_new.png", width=7, height=4, units="in", res=300)
-plotRLE(nudeltanormalized_counts, outline=FALSE, ylim=c(-4, 4), col=colors[x], 
-        xaxt = "n", ylab = "Relative log expression") 
-axis(1, at=1:16, labels = samplenames, las = 2, cex.axis = 0.7)
-dev.off()
-png(filename="DESeq2_nudelta_PCA_new.png", width=7, height=4, units="in", res=300)
-plotPCA(nudeltanormalized_counts, col=colors[x], cex=0.75)
-dev.off()
-
-# make side-by-side RLE and PCA plot
-png(filename="DESeq2_nudelta_RLE_PCAplot.png", width=7, height=3, units="in", res=300)
+#png(filename="DESeq2_nudelta_RLE_PCAplot.png", width=7, height=3, units="in", res=300)
 par(mfrow = c(1, 2))
 par(mar = c(5, 4, 1, 1))
 plotRLE(nudeltanormalized_counts, outline=FALSE, ylim=c(-4, 4), col=colors[x], xaxt = "n", 
@@ -167,7 +148,7 @@ plotRLE(nudeltanormalized_counts, outline=FALSE, ylim=c(-4, 4), col=colors[x], x
         cex.lab = 1, cex.axis=0.8)
 axis(1, at=1:16, labels = samplenames, las = 2, cex.axis = 0.8)
 plotPCA(nudeltanormalized_counts, col=colors[x], cex=0.7, cex.lab = 1, cex.axis = 0.8)
-dev.off()
+#dev.off()
 
 ##############################################################
 ##### controlam VS controlpm -------------------------------------------
@@ -186,8 +167,8 @@ resLFCnudelta005lfcdown <- subset(resLFCnudelta005, resLFCnudelta005$log2FoldCha
 resLFCnudelta005lfc <- rbind(resLFCnudelta005lfcup, resLFCnudelta005lfcdown)
 
 # get gene list
-resLFCnudelta005lfcuplist <- rownames(resLFCnudelta005lfcup)
-resLFCnudelta005lfcdownlist <- rownames(resLFCnudelta005lfcdown)
+resLFCnudelta005lfcuplist <- rownames(resLFCnudelta005lfcup) #6562
+resLFCnudelta005lfcdownlist <- rownames(resLFCnudelta005lfcdown) #2537
 resLFCnudelta005lfclist <- rownames(resLFCnudelta005lfc)
 
 # export gene list
@@ -199,7 +180,6 @@ write.table(resLFCnudelta005lfcdownlist, file = "output/DEGs_DESeq2_nudelta_ctrl
 saveRDS(resLFCnudelta005lfc, file = "RData/DEGs_nudelta_full_ctrlampm.RData")
 saveRDS(resLFCnudelta, file = "RData/DEGs_nudelta_full_ctrlampm_full.RData")
 # export logFC data
-#resLFCnudelta005lfc <- readRDS(file = "RData/DEGs_nudelta_full_ctrlampm.RData")
 resLFCnudelta005lfc <- as.data.frame(resLFCnudelta005lfc)
 resLFCnudelta005lfc %>%
   rownames_to_column(var = "locusID") -> resLFCnudelta005lfc
@@ -223,8 +203,8 @@ trtam_nudelta005lfcdown <- subset(trtam_nudelta005, trtam_nudelta005$log2FoldCha
 trtam_nudelta005lfc <- rbind(trtam_nudelta005lfcup, trtam_nudelta005lfcdown)
 
 # get gene list
-trtam_nudelta005lfcuplist <- rownames(trtam_nudelta005lfcup)
-trtam_nudelta005lfcdownlist <- rownames(trtam_nudelta005lfcdown)
+trtam_nudelta005lfcuplist <- rownames(trtam_nudelta005lfcup) #2877
+trtam_nudelta005lfcdownlist <- rownames(trtam_nudelta005lfcdown) #4572
 trtam_nudelta005lfclist <- rownames(trtam_nudelta005lfc)
 
 # export gene list
@@ -259,8 +239,8 @@ cdampm_resLFCnudelta005lfcdown <- subset(cdampm_resLFCnudelta005, cdampm_resLFCn
 cdampm_resLFCnudelta005lfc <- rbind(cdampm_resLFCnudelta005lfcup, cdampm_resLFCnudelta005lfcdown)
 
 # get gene list
-cdampm_resLFCnudelta005lfcuplist <- rownames(cdampm_resLFCnudelta005lfcup)
-cdampm_resLFCnudelta005lfcdownlist <- rownames(cdampm_resLFCnudelta005lfcdown)
+cdampm_resLFCnudelta005lfcuplist <- rownames(cdampm_resLFCnudelta005lfcup) #9470
+cdampm_resLFCnudelta005lfcdownlist <- rownames(cdampm_resLFCnudelta005lfcdown) #1137
 cdampm_resLFCnudelta005lfclist <- rownames(cdampm_resLFCnudelta005lfc)
 
 # export gene list
@@ -303,8 +283,8 @@ trtpm_nudelta005lfcdown <- subset(trtpm_nudelta005, trtpm_nudelta005$log2FoldCha
 trtpm_nudelta005lfc <- rbind(trtpm_nudelta005lfcup, trtpm_nudelta005lfcdown)
 
 # get gene list
-trtpm_nudelta005lfcuplist <- rownames(trtpm_nudelta005lfcup)
-trtpm_nudelta005lfcdownlist <- rownames(trtpm_nudelta005lfcdown)
+trtpm_nudelta005lfcuplist <- rownames(trtpm_nudelta005lfcup) #3478
+trtpm_nudelta005lfcdownlist <- rownames(trtpm_nudelta005lfcdown) #1607
 trtpm_nudelta005lfclist <- rownames(trtpm_nudelta005lfc)
 
 # export gene list
@@ -315,29 +295,3 @@ write.table(trtpm_nudelta005lfcdownlist, file = "output/DEGs_DESeq2_nudelta_ctrl
 # save RData
 saveRDS(trtpm_nudelta005lfc, file = "RData/DEGs_nudelta_full_ctrlcoldpm.RData")
 
-##########################################################
-#### compare DEGs
-resLFCnudelta005lfclist # controlam vs controlpm
-trtam_nudelta005lfclist # controlam vs chillingam
-cdampm_resLFCnudelta005lfclist # chillingam vs chillingpm
-trtpm_nudelta005lfclist # controlpm vs chillingpm
-
-# make a venn diagram
-gplots::venn(list(ctrlAM_PM = resLFCnudelta005lfclist,
-                  ctrl_chillAM = trtam_nudelta005lfclist,
-                  chillAM_PM = cdampm_resLFCnudelta005lfclist,
-                  ctrl_chillPM = trtpm_nudelta005lfclist))
-
-# make a venn diagram to compare DE genes
-library(VennDiagram)
-colors <- brewer.pal(4, "Pastel1")
-venn.diagram(list(set1 = resLFCnudelta005lfclist,
-                  set2 = trtam_nudelta005lfclist,
-                  set3 = cdampm_resLFCnudelta005lfclist,
-                  set4 = trtpm_nudelta005lfclist), 
-             filename = "./venn_DESeq2_nudelta_DEGs.png", 
-             fill = colors, lwd = 2, lty = 'blank',
-             category.names = c("AM-PM in ctrl", "ctrl-chill in AM", 
-                                "AM-PM in chill", "ctrl-chill in PM"),
-             cat.pos = c(350, 10, 0, 0),
-             height = 9, width = 9, units = 'in')
