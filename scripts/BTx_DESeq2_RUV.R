@@ -65,37 +65,22 @@ saveRDS(dds_ruv2, file = "RData/DESeq2_RUV_genedds.RData")
 
 # make RLE plot
 normalized_counts <- counts(dds_ruv2, normalized=TRUE)
+# save data
+#write.csv(normalized_counts, file = "normcount_DESeq2_RUV.txt")
+
+# make side-by-side RLE and PCA plot
 x <- as.factor(rep(c("controlam", "controlpm", "chillingam", "chillingpm"), each = 4)) 
 x <- factor(x, levels = c("controlam", "controlpm", "chillingam", "chillingpm"))
 colors <- brewer.pal(4, "Set2")  
 samplenames <- colnames(normalized_counts)
-plotRLE(normalized_counts, outline=FALSE, ylim=c(-4, 4), col=colors[x], xaxt = "n", 
-        ylab = "Relative log expression")
-axis(1, at=1:16, labels = samplenames, las = 2, cex.axis = 0.7)
-plotPCA(normalized_counts, col=colors[x], cex=0.75)
-# save data
-write.csv(normalized_counts, file = "normcount_DESeq2_RUV.txt")
-
-# save plot
-png(filename="DESeq2_RUV_RLE.png", width=7, height=4, units="in", res=300)
-plotRLE(normalized_counts, outline=FALSE, ylim=c(-4, 4), col=colors[x], xaxt = "n", 
-        ylab = "Relative log expression")
-axis(1, at=1:16, labels = samplenames, las = 2, cex.axis = 0.7)
-dev.off()
-
-png(filename="DESeq2_RUV_PCA.png", width=7, height=4, units="in", res=300)
-plotPCA(normalized_counts, col=colors[x], cex=0.75)
-dev.off()
-
-# make side-by-side RLE and PCA plot
-png(filename="DESeq2_RUV_RLE_PCAplot.png", width=7.5, height=3, units="in", res=300)
+#png(filename="DESeq2_RUV_RLE_PCAplot.png", width=7.5, height=3, units="in", res=300)
 par(mfrow = c(1, 2))
 par(mar = c(5, 4, 1, 1))
 plotRLE(normalized_counts, outline=FALSE, ylim=c(-4, 4), col=colors[x], xaxt = "n", 
         ylab = "Relative log expression", cex.lab = 0.7, cex.axis=0.7)
 axis(1, at=1:16, labels = samplenames, las = 2, cex.axis = 0.7)
 plotPCA(normalized_counts, col=colors[x], cex=0.7, cex.axis = 0.7, cex.lab = 0.7)
-dev.off()
+#dev.off()
 
 ##############################################################
 ##### controlam VS controlpm ---------------------------------------------
@@ -114,8 +99,8 @@ resLFC_RUV005lfcdown <- subset(resLFC_RUV005, resLFC_RUV005$log2FoldChange <= -0
 resLFC_RUV005lfc <- rbind(resLFC_RUV005lfcup, resLFC_RUV005lfcdown)
 
 # get gene list
-resLFC_RUV005lfcuplist <- rownames(resLFC_RUV005lfcup)
-resLFC_RUV005lfcdownlist <- rownames(resLFC_RUV005lfcdown)
+resLFC_RUV005lfcuplist <- rownames(resLFC_RUV005lfcup) #3728
+resLFC_RUV005lfcdownlist <- rownames(resLFC_RUV005lfcdown) #3661
 resLFC_RUV005lfclist <- rownames(resLFC_RUV005lfc)
 
 # save RData
@@ -143,8 +128,8 @@ trtam_RUV05lfcdown <- subset(trtam_RUV05, trtam_RUV05$log2FoldChange <= -0.5)
 trtam_RUV05lfc <- rbind(trtam_RUV05lfcup, trtam_RUV05lfcdown)
 
 # get gene list
-trtam_RUV05lfcuplist <- rownames(trtam_RUV05lfcup)
-trtam_RUV05lfcdownlist <- rownames(trtam_RUV05lfcdown)
+trtam_RUV05lfcuplist <- rownames(trtam_RUV05lfcup) #3770
+trtam_RUV05lfcdownlist <- rownames(trtam_RUV05lfcdown) #3435
 trtam_RUV05lfclist <- rownames(trtam_RUV05lfc)
 
 # save RData
@@ -179,8 +164,8 @@ cdampm_resLFC_RUV005lfcdown <- subset(cdampm_resLFC_RUV005, cdampm_resLFC_RUV005
 cdampm_resLFC_RUV005lfc <- rbind(cdampm_resLFC_RUV005lfcup, cdampm_resLFC_RUV005lfcdown)
 
 # get gene list
-cdampm_resLFC_RUV005lfcuplist <- rownames(cdampm_resLFC_RUV005lfcup)
-cdampm_resLFC_RUV005lfcdownlist <- rownames(cdampm_resLFC_RUV005lfcdown)
+cdampm_resLFC_RUV005lfcuplist <- rownames(cdampm_resLFC_RUV005lfcup) #2240
+cdampm_resLFC_RUV005lfcdownlist <- rownames(cdampm_resLFC_RUV005lfcdown) #2366
 cdampm_resLFC_RUV005lfclist <- rownames(cdampm_resLFC_RUV005lfc)
 
 # save RData
@@ -215,8 +200,8 @@ trtpm_RUV05lfcdown <- subset(trtpm_RUV05, trtpm_RUV05$log2FoldChange <= -0.5)
 trtpm_RUV05lfc <- rbind(trtpm_RUV05lfcup, trtpm_RUV05lfcdown)
 
 # get gene list
-trtpm_RUV05lfcuplist <- rownames(trtpm_RUV05lfcup)
-trtpm_RUV05lfcdownlist <- rownames(trtpm_RUV05lfcdown)
+trtpm_RUV05lfcuplist <- rownames(trtpm_RUV05lfcup) #2577
+trtpm_RUV05lfcdownlist <- rownames(trtpm_RUV05lfcdown) #2192
 trtpm_RUV05lfclist <- rownames(trtpm_RUV05lfc)
 
 # save RData
