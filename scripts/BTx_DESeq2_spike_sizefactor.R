@@ -64,36 +64,21 @@ saveRDS(gene_dds3, file = "RData/DESeq2_spikesf_genedds.RData")
 
 # make RLE plot
 normalized_counts <- counts(gene_dds3, normalized=TRUE)
+#write.csv(normalized_counts, file = "normcount_DESeq2_spikesf.txt")
+
+# make side-by-side RLE and PCA plot
 x <- as.factor(rep(c("controlam", "controlpm", "chillingam", "chillingpm"), each = 4)) 
 x <- factor(x, levels = c("controlam", "controlpm", "chillingam", "chillingpm"))
 colors <- brewer.pal(4, "Set2")
 samplenames <- colnames(normalized_counts)
-plotRLE(normalized_counts, outline=FALSE, ylim=c(-4, 4), col=colors[x], xaxt = "n", 
-        ylab = "Relative log expression")
-axis(1, at=1:16, labels = samplenames, las = 2, cex.axis = 0.7)
-plotPCA(normalized_counts, col=colors[x], cex=0.75)
-write.csv(normalized_counts, file = "normcount_DESeq2_spikesf.txt")
-
-# save plot
-png(filename="DESeq2_spikesf_RLE.png", width=7, height=4, units="in", res=300)
-plotRLE(normalized_counts, outline=FALSE, ylim=c(-4, 4), col=colors[x], xaxt = "n", 
-        ylab = "Relative log expression")
-axis(1, at=1:16, labels = samplenames, las = 2, cex.axis = 0.7)
-dev.off()
-
-png(filename="DESeq2_spikesf_PCA.png", width=7, height=4, units="in", res=300)
-plotPCA(normalized_counts, col=colors[x], cex=0.75)
-dev.off()
-
-# make side-by-side RLE and PCA plot
-png(filename="DESeq2_spikesf_RLE_PCAplot.png", width=7.5, height=3, units="in", res=300)
+#png(filename="DESeq2_spikesf_RLE_PCAplot.png", width=7.5, height=3, units="in", res=300)
 par(mfrow = c(1, 2))
 par(mar = c(5, 4, 1, 1))
 plotRLE(normalized_counts, outline=FALSE, ylim=c(-4, 4), col=colors[x], xaxt = "n", 
         ylab = "Relative log expression", cex.lab = 0.7, cex.axis=0.7)
 axis(1, at=1:16, labels = samplenames, las = 2, cex.axis = 0.7)
 plotPCA(normalized_counts, col=colors[x], cex=0.7, cex.axis = 0.7, cex.lab = 0.7)
-dev.off()
+#dev.off()
 
 ##############################################################
 ##### controlam VS controlpm
@@ -112,8 +97,8 @@ spikesfresLFC005lfcdown <- subset(spikesfresLFC005, spikesfresLFC005$log2FoldCha
 spikesfresLFC005lfc <- rbind(spikesfresLFC005lfcup, spikesfresLFC005lfcdown)
 
 # get gene list
-spikesfresLFC005lfcuplist <- rownames(spikesfresLFC005lfcup)
-spikesfresLFC005lfcdownlist <- rownames(spikesfresLFC005lfcdown)
+spikesfresLFC005lfcuplist <- rownames(spikesfresLFC005lfcup) #5324
+spikesfresLFC005lfcdownlist <- rownames(spikesfresLFC005lfcdown) #2267
 spikesfresLFC005lfclist <- rownames(spikesfresLFC005lfc)
 
 # save RData
@@ -141,8 +126,8 @@ trtam_spikesf05lfcdown <- subset(trtam_spikesf05, trtam_spikesf05$log2FoldChange
 trtam_spikesf05lfc <- rbind(trtam_spikesf05lfcup, trtam_spikesf05lfcdown)
 
 # get gene list
-trtam_spikesf05lfcuplist <- rownames(trtam_spikesf05lfcup)
-trtam_spikesf05lfcdownlist <- rownames(trtam_spikesf05lfcdown)
+trtam_spikesf05lfcuplist <- rownames(trtam_spikesf05lfcup) #2339
+trtam_spikesf05lfcdownlist <- rownames(trtam_spikesf05lfcdown) #3270
 trtam_spikesf05lfclist <- rownames(trtam_spikesf05lfc)
 
 # save RData
@@ -178,8 +163,8 @@ cdampm_spikesfresLFC005lfcdown <- subset(cdampm_spikesfresLFC005, cdampm_spikesf
 cdampm_spikesfresLFC005lfc <- rbind(cdampm_spikesfresLFC005lfcup, cdampm_spikesfresLFC005lfcdown)
 
 # get gene list
-cdampm_spikesfresLFC005lfcuplist <- rownames(cdampm_spikesfresLFC005lfcup)
-cdampm_spikesfresLFC005lfcdownlist <- rownames(cdampm_spikesfresLFC005lfcdown)
+cdampm_spikesfresLFC005lfcuplist <- rownames(cdampm_spikesfresLFC005lfcup) #7538
+cdampm_spikesfresLFC005lfcdownlist <- rownames(cdampm_spikesfresLFC005lfcdown) #1033
 cdampm_spikesfresLFC005lfclist <- rownames(cdampm_spikesfresLFC005lfc)
 
 # save RData
@@ -214,8 +199,8 @@ trtpm_spikesf05lfcdown <- subset(trtpm_spikesf05, trtpm_spikesf05$log2FoldChange
 trtpm_spikesf05lfc <- rbind(trtpm_spikesf05lfcup, trtpm_spikesf05lfcdown)
 
 # get gene list
-trtpm_spikesf05lfcuplist <- rownames(trtpm_spikesf05lfcup)
-trtpm_spikesf05lfcdownlist <- rownames(trtpm_spikesf05lfcdown)
+trtpm_spikesf05lfcuplist <- rownames(trtpm_spikesf05lfcup) #2541
+trtpm_spikesf05lfcdownlist <- rownames(trtpm_spikesf05lfcdown) #1048
 trtpm_spikesf05lfclist <- rownames(trtpm_spikesf05lfc)
 
 # save RData
