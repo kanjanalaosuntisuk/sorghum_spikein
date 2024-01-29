@@ -20,3 +20,4 @@ Data used in the analysis are in the 'RData' folder, and R scripts are in the 's
 - DESeq2_compare_gene_exp_2norm_cold.R: to make dot plots of selected genes to demonstrate differences in normalized expression levels between normalization methods
 - TopGO_DESeq2_ctrlcoldam.R: to perform GO analysis and make heat maps of significant GO terms using AM control-vs-chilling DEGs
 - TopGO_DESeq2_ctrlcoldpm.R: to perform GO analysis and make heat maps of significant GO terms using PM control-vs-chilling DEGs
+**Note: please do not source this code directly as many of the commands are not wrapped in functions**
