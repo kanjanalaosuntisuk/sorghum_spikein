@@ -1,5 +1,5 @@
 ##### scripts for making plots of DEGs from MapMan analysis ----
-##### Effect of chilling stress on gene expression under AM and PM ----
+##### Effect of chilling stress on gene expression in AM and PM ----
 
 library(DESeq2)
 library(tidyverse)
