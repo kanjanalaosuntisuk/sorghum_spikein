@@ -1,5 +1,5 @@
 ##### scripts for making plots of selected DEGs from DESeq2 analysis ----
-##### Effect of Time of Day on gene expression under control and chilling stress ----
+##### Effect of chilling stress on gene expression under AM and PM ----
 
 library(DESeq2)
 library(tidyverse)
